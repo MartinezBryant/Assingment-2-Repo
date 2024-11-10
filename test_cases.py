@@ -1,35 +1,80 @@
-# test_cases.py - Test cases for the parser
+from lexer import Lexer
+from parser import SyntaxAnalyzer
 
-# Import the lexer and parser functions
-from lexer import simple_lexer
-from parser import parse
+def run_test_case(program, output_file):
+    # Step 1: Tokenize the input program
+    lexer = Lexer(program)
+    lexer.lexer()  # Run the lexer on the program
+    tokens, lexemes = lexer.get_tokens()  # Get the tokens and lexemes
 
-# Test Case 1: Simple Assignment
-def test_case_1():
-    print("Test Case 1: a = b + c;")
-    source_code = "a = b + c;"
-    input_tokens = simple_lexer(source_code)  # Generate tokens using lexer
-    parse(input_tokens)  # Parse the token stream
-    print("\n")
+    # Write tokens and lexemes to the output file
+    output_file.write(f"\nRunning test case:\n{program}\n")
+    output_file.write("Tokens and Lexemes:\n")
+    for token, lexeme in zip(tokens, lexemes):
+        output_file.write(f"Token: {token}, Lexeme: {lexeme}\n")
+    
+    # Step 2: Parse the tokens using the syntax analyzer
+    parser = SyntaxAnalyzer(tokens, lexemes, print_switch=True, output_file=output_file)
+    parser.parse()
 
-# Test Case 2: Expression with Subtraction
-def test_case_2():
-    print("Test Case 2: x - y;")
-    source_code = "x - y;"
-    input_tokens = simple_lexer(source_code)  # Generate tokens using lexer
-    parse(input_tokens)  # Parse the token stream
-    print("\n")
+# Open the output file once, before running all test cases
+with open('all_test_cases_output.txt', 'w') as output_file:
+    # Test Case 1: Simple addition
+    program1 = """
+    a + b;
+    """
+    run_test_case(program1, output_file)
 
-# Test Case 3: Standalone Identifier
-def test_case_3():
-    print("Test Case 3: z;")
-    source_code = "z;"
-    input_tokens = simple_lexer(source_code)  # Generate tokens using lexer
-    parse(input_tokens)  # Parse the token stream
-    print("\n")
+    # Test Case 2: Simple subtraction
+    program2 = """
+    x - y;
+    """
+    run_test_case(program2, output_file)
 
-# Run all test cases
-if __name__ == "__main__":
-    test_case_1()
-    test_case_2()
-    test_case_3()
+    # Test Case 3: Multiple terms with addition and subtraction
+    program3 = """
+    a + b - c;
+    """
+    run_test_case(program3, output_file)
+
+    # Test Case 4: Multiple identifiers with no operator
+    program4 = """
+    a b c;
+    """
+    run_test_case(program4, output_file)
+
+    # Test Case 5: Operator at the start
+    program5 = """
+    + a - b;
+    """
+    run_test_case(program5, output_file)
+
+    # Test Case 6: Empty expression (epsilon case)
+    program6 = """
+    a;
+    """
+    run_test_case(program6, output_file)
+
+    # Test Case 7: Expression with multiple terms and different operators
+    program7 = """
+    a + b - c + d;
+    """
+    run_test_case(program7, output_file)
+
+    # Test Case 8: Expression with missing operand after operator
+    program8 = """
+    a + - b;
+    """
+    run_test_case(program8, output_file)
+
+    # Test Case 9: Long expression
+    program9 = """
+    x + y - z + w - v + u;
+    """
+    run_test_case(program9, output_file)
+
+    # Test Case 10: Invalid operator sequence
+    program10 = """
+    a + - b;
+    """
+    run_test_case(program10, output_file)
