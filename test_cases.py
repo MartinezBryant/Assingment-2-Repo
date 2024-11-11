@@ -4,8 +4,8 @@ from parser import SyntaxAnalyzer
 def run_test_case(program, output_file):
     # Step 1: Tokenize the input program
     lexer = Lexer(program)
-    lexer.lexer()  # Run the lexer on the program
-    tokens, lexemes = lexer.get_tokens()  # Get the tokens and lexemes
+    lexer.tokenize()  # Run the lexer on the program
+    tokens, lexemes = zip(*lexer.tokens)  # Get the tokens and lexemes
 
     # Write tokens and lexemes to the output file
     output_file.write(f"\nRunning test case:\n{program}\n")
