@@ -35,21 +35,21 @@ def run_test_case(program, test_case_number):
         # Error messages will be written to the same output file during the parse
 
 # Test Case 1: Simple addition
-program1 = """
+test_case_1 = """
 a + c * (d / 4 * e);
 """
 
 # Test Case 2: Simple subtraction
-program2 = """
+test_case_2 = """
 x + 245 / a;
 """
 
 # Test Case 3: Multiple terms with addition and subtraction
-program3 = """
+test_case_3 = """
 a + c/5 * 2;
 """
 
 # Run the test cases with separate output files for each case
-run_test_case(program1, 1)
-run_test_case(program2, 2)
-run_test_case(program3, 3)
+run_test_case(test_case_1, 1)
+run_test_case(test_case_2, 2)
+run_test_case(test_case_3, 3)
