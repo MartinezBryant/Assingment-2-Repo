@@ -3,7 +3,7 @@ class SyntaxAnalyzer:
         self.tokens = tokens
         self.lexemes = lexemes
         self.print_switch = print_switch
-        self.output_file = output_file
+        self.output_file = output_file  # Will handle both production and error output
         self.current_token_index = 0
         self.line_number = 1
 
@@ -65,17 +65,17 @@ class SyntaxAnalyzer:
             if token == 'SEPARATOR' and lexeme == ')':
                 self.consume()  # consume ')'
             else:
-                self.error("Expected ')'")
+                self.error("Expected ')'")  # Write error to the same output file
         elif token == 'IDENTIFIER':
             self.print_production("F -> id")
             self.consume()  # consume identifier
         else:
-            self.error("Expected identifier or '('")
+            self.error("Expected identifier or '('")  # Write error to the same output file
 
     def error(self, message):
         token, lexeme = self.get_current_token()
         error_msg = f"Syntax Error: {message} at token '{token}', lexeme '{lexeme}' on line {self.line_number}\n"
         if self.output_file:
-            self.output_file.write(error_msg)
+            self.output_file.write(error_msg)  # Write error to the output file
         else:
-            print(error_msg)
+            print(error_msg)  # Print error if output file isn't available
